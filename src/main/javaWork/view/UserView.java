@@ -27,10 +27,32 @@ public class UserView extends JFrame {
         sendButton.addActionListener(e -> {
             int pin;
             String textPin=this.textArea.getText();
-            pin=Integer.parseInt(textPin);
-            info.setText("Got it:"+pin);
+            textArea.setText("");
+            try {
+                pin=Integer.parseInt(textPin);
+                info.setText("Got it:"+pin+"Waiting...");
 
-            controller.checkPin(pin);
+
+                Thread thread=new Thread(()->{
+                    sendButton.setEnabled(false);
+                    boolean result;
+                    result=controller.checkPin(pin);
+                    String resultMessage;
+                    if(result){
+                        resultMessage="Right";
+                    }else {
+                        resultMessage="Wrong, try again";
+                    }
+                    info.setText(resultMessage);
+                    sendButton.setEnabled(true);
+
+                });
+                thread.start();
+            } catch (NumberFormatException ex) {
+                info.setText("Only numbers allowed...");
+            }
+
+
             // abrabotca pincoda
 
 

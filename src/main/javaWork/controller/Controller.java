@@ -9,6 +9,6 @@ public class Controller {
     }
     public boolean checkPin(int pin) {
 
-        return false;
+        return model.getPin()==pin;
     }
 }
